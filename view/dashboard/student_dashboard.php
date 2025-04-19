@@ -20,7 +20,7 @@ ob_start();
                     <div class="card-body">
                         <h5 class="card-title">Lớp học của tôi</h5>
                         <p class="card-text">Xem các lớp học và bài tập</p>
-                        <a href="#" class="btn btn-light">Truy cập</a>
+                        <a href="index.php?controller=classroom&action=index" class="btn btn-light">Truy cập</a>
                     </div>
                 </div>
             </div>

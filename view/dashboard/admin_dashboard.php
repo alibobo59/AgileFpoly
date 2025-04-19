@@ -20,7 +20,8 @@ ob_start();
                     <div class="card-body">
                         <h5 class="card-title">Quản lý người dùng</h5>
                         <p class="card-text">Quản lý tất cả tài khoản trong hệ thống</p>
-                        <a href="index.php?action=index&controller=user" class="btn btn-light">Truy cập</a>
+                    
+                        <a href="index.php?controller=user&action=index" class="btn btn-light">Truy cập</a>
                     </div>
                 </div>
             </div>

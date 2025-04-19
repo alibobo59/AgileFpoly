@@ -18,35 +18,15 @@ class UserController {
     }
     
     public function index() {
-       
-        // Check if user is logged in
-        if (!isset($_SESSION['user_id'])) {
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
             header('Location: index.php?controller=user&action=login');
             exit;
         }
         
-        // Redirect to appropriate dashboard based on user role
-        if (!isset($_SESSION['user_role'])) {
-            header('Location: index.php?controller=user&action=login');
-            exit;
-        }
+        $userDAO = new UserDAO();
+        $users = $userDAO->getAllUsers();
         
-        switch ($_SESSION['user_role']) {
-            case 'admin':
-                header('Location: index.php?controller=user&action=admin_dashboard');
-                break;
-            case 'teacher':
-                header('Location: index.php?controller=user&action=teacher_dashboard');
-                break;
-            case 'student':
-                header('Location: index.php?controller=user&action=student_dashboard');
-                break;
-            default:
-                $error = "Invalid user role";
-                include __DIR__ . '/../view/user/login.php';
-                break;
-        }
-        exit;
+        include __DIR__ . '/../view/user/admin_index.php';
     }
     
     public function create() {

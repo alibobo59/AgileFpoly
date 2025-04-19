@@ -16,60 +16,19 @@ $id = isset($_GET['id']) ? $_GET['id'] : null;
 
 
 // If not logged in and trying to access protected routes, redirect to login
+// Update the authorization check to allow admin access
 if (!isset($_SESSION['user_id']) && 
-    !in_array($action, ['login', 'register'])) {
+    !in_array($action, ['login', 'register']) &&
+    ($controller !== 'user' || $action !== 'admin_dashboard')) {
     header('Location: index.php?controller=user&action=login');
     exit;
 }
 
-// If logged in and accessing login/register pages, redirect to appropriate dashboard
-if (isset($_SESSION['user_id']) && in_array($action, ['login', 'register'])) {
-    header('Location: index.php?controller=user&action=index');
-    exit;
-}
-
+// Add special admin route handling
 switch ($controller) {
-    case 'classroom':
-        $classroomController = new ClassRoomController();
-    
-        switch ($action) {
-            case 'create':
-                echo "Classroom controller selected, action: $action<br>";
-                // die("Routing into ClassRoomController");
-                $classroomController->create();
-                break;
-            case 'edit':
-                if ($id) {
-                    $classroomController->edit($id);
-                } else {
-                    header('Location: index.php?controller=classroom&action=index');
-                }
-                break;
-            case 'delete':
-                if ($id) {
-                    $classroomController->delete($id);
-                } else {
-                    header('Location: index.php?controller=classroom&action=index');
-                }
-                break;
-            case 'view':
-                if ($id) {
-                    $classroomController->view($id);
-                } else {
-                    header('Location: index.php?controller=classroom&action=index');
-                }
-                break;
-            case 'index':
-            default:
-                $classroomController->index();
-                break;
-        }
-        break;
-    
     case 'user':
     default:
         $userController = new UserController();
-  
         switch ($action) {
             case 'create':
                 $userController->create();
@@ -105,7 +64,12 @@ switch ($controller) {
                 $userController->logout();
                 break;
             case 'admin_dashboard':
-                $userController->admin_dashboard();
+                if ($_SESSION['user_role'] === 'admin') {
+                    $userController->admin_dashboard();
+                } else {
+                    header('Location: index.php?controller=user&action=login');
+                    exit;
+                }
                 break;
             case 'teacher_dashboard':
                 $userController->teacher_dashboard();

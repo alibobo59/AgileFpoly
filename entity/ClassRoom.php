@@ -6,6 +6,8 @@ class ClassRoom {
     private $teacher_id;
     private $created_at;
     private $updated_at;
+    private $teacher_name;  // Add new property
+    private $enrollment_date; // Add enrollment date property
 
     public function __construct($id = null, $name = null, $description = null, $teacher_id = null) {
         $this->id = $id;
@@ -31,4 +33,22 @@ class ClassRoom {
     public function setTeacherId($teacher_id) { $this->teacher_id = $teacher_id; }
     public function setCreatedAt($created_at) { $this->created_at = $created_at; }
     public function setUpdatedAt($updated_at) { $this->updated_at = $updated_at; }
+
+    // Add new methods for teacher name
+    public function getTeacherName() {
+        return $this->teacher_name;
+    }
+
+    public function setTeacherName($teacher_name) {
+        $this->teacher_name = $teacher_name;
+    }
+    
+    // Add methods for enrollment date
+    public function getEnrollmentDate() {
+        return $this->enrollment_date;
+    }
+    
+    public function setEnrollmentDate($enrollment_date) {
+        $this->enrollment_date = $enrollment_date;
+    }
 }

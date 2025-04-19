@@ -1,6 +1,32 @@
-<?php
-ob_start();
-?>
+í p<?php ob_start(); ?>
+<div class="container">
+    <!-- Add Student Form -->
+    <?php if ($isTeacher || $isAdmin): ?>
+    <div class="mb-4">
+        <h4>Thêm sinh viên</h4>
+        <form method="POST" action="index.php?controller=classroom&action=addStudent">
+            <input type="hidden" name="classroom_id" value="<?= $classroom->getId() ?>">
+            <div class="input-group">
+                <input type="email" name="student_email" class="form-control" 
+                       placeholder="Nhập email sinh viên" required>
+                <button type="submit" class="btn btn-primary">
+                    Thêm sinh viên
+                </button>
+            </div>
+        </form>
+    </div>
+    <?php endif; ?>
+
+    <!-- Error/Success Messages -->
+    <?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+    <?php unset($_SESSION['error']); endif; ?>
+    
+    <?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success"><?= $_SESSION['success'] ?></div>
+    <?php unset($_SESSION['success']); endif; ?>
+</div>
+<?php ob_end_flush(); ?>
 <div class="card">
     <div class="card-header">
         <h2><?php echo htmlspecialchars($classroom->getName()); ?></h2>
@@ -68,13 +94,11 @@ ob_start();
             </div>
             <form action="index.php?controller=classroom&action=addStudent" method="POST">
                 <div class="modal-body">
-                    <input type="hidden" name="classroom_id" value="<?php echo $classroom->getId(); ?>">
+                    <input type="hidden" name="classroom_id" value="<?= $classroom->getId() ?>">
                     <div class="form-group">
-                        <label for="student_id">Chọn sinh viên</label>
-                        <select class="form-control" id="student_id" name="student_id" required>
-                            <option value="">Chọn sinh viên...</option>
-                            <!-- Thêm options cho sinh viên ở đây -->
-                        </select>
+                        <label>Email sinh viên</label>
+                        <input type="email" name="student_email" class="form-control" 
+                               placeholder="Nhập email sinh viên" required>
                     </div>
                 </div>
                 <div class="modal-footer">

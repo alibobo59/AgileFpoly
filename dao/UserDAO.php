@@ -214,5 +214,46 @@ class UserDAO {
         
         return $row['count'] > 0;
     }
+    
+    // Get user by email
+    public function getByEmail($email) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE email = :email LIMIT 0,1";
+        $stmt = $this->conn->prepare($query);
+        
+        // Sanitize email
+        $email = htmlspecialchars(strip_tags($email));
+        
+        // Bind parameters
+        $stmt->bindParam(":email", $email);
+        
+        // Execute query
+        $stmt->execute();
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($row) {
+            return new User(
+                $row['id'],
+                $row['username'],
+                $row['email'],
+                $row['password'],
+                $row['created_at'],
+                $row['role']
+            );
+        }
+        
+        return null;
+    }
+    
+    public function getConnection() {
+        return $this->conn;
+    }
+    
+    public function getAllUsers() {
+        $sql = "SELECT id, username, email, role, created_at FROM users ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
